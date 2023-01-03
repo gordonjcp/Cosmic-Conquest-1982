@@ -13,7 +13,7 @@ SIZE 3 * 2 / CONSTANT NO-OF-PLANETS ( planets in galaxy)
 0 VARIABLE VTAX         ( tax collected)
 0 VARIABLE C-LEGIONS    ( no. of computer legions for attacks)
 0 VARIABLE CLASS-TOTALS ( computers planets classes totals)
-0 VARIABLE C-FLEETS     ( no. of computer fleets)
+0 VARIABLE C-FLEETS     ( no. of computer fleets)            -->
 0 VARIABLE LEN          ( no. of moves remaining in game)
 0 VARIABLE TROOPS       ( no. of computers troops in game)
 0 VARIABLE RAND1        ( first random number seed)
@@ -29,7 +29,7 @@ SIZE 3 * 2 / CONSTANT NO-OF-PLANETS ( planets in galaxy)
 0 VARIABLE C-PLANETS    ( no. of computer planets)
 0 VARIABLE PLANETS      ( no. of players planets)
 0 VARIABLE FLEET-FLAG   ( no. of players current fleet)
-250 VARIABLE CREDIT     ( players credit in taxes)
+250 VARIABLE CREDIT     ( players credit in taxes)           -->
 0 VARIABLE START        ( starting score in the game)
 
 ( DEFINING WORDS)
@@ -43,6 +43,9 @@ SIZE SIZE ARRAY INFO2 ( strength array)
 11 11 ARRAY SCREEN ( the screen array)
 2 6 ARRAY FLEETS ( player fleets info)
 
+
+
+-->
 ( the case statement)
 
 : CASE
@@ -58,8 +61,7 @@ SIZE SIZE ARRAY INFO2 ( strength array)
 
 : ENDCASE
    4 ?PAIRS COMPILE DROP BEGIN SP@ CSP @ = 0= WHILE 2
-   <<COMPILE>> ENDIF REPEAT CSP ! ; IMMEDIATE
-
+   <<COMPILE>> ENDIF REPEAT CSP ! ; IMMEDIATE                -->
 ( general utility words)
 : DELAY                      ( delay a fixed amount of time)
    5000 0 DO LOOP ;
@@ -75,6 +77,7 @@ SIZE SIZE ARRAY INFO2 ( strength array)
 : CLEAR-SCREEN ( clear hires screen 1)
    H1 HCLR ;
 
+                                                             -->
 : CLEAR-DISP ( fill screen array with FF's)
    1 1 SCREEN 121 255 FILL ;
 
@@ -90,10 +93,23 @@ SIZE SIZE ARRAY INFO2 ( strength array)
 
 : RANDOM2 ( --- ran ) ( random number in range 1-SIZE)
    RAND2 @ 53 * 773 + DUP RAND2 ! ABS SIZE MOD 1+ ;
-
+                                                             -->
 : EDGE-CHECK ( n --- ng ) ( calculates wrap around of galaxy)
    SIZE 1 - + SIZE MOD 1+ ;
 
+
+
+
+
+
+
+
+
+
+
+
+
+-->
 : INPUT ( --- n1 ) ( number input routine)
    0 BEGIN ( start with zero total)
        KEY DUP EMIT DUP 8 = ( is it backspace?)
@@ -109,7 +125,7 @@ SIZE SIZE ARRAY INFO2 ( strength array)
          ENDIF
        ENDIF
      UNTIL ;
-
+-->
 : F ( n1 --- add1 ) ( indexes current fleet array)
    FLEET-FLAG @ SWAP FLEETS ;
 : TEXT                      ( selects text screen )
@@ -118,6 +134,14 @@ SIZE SIZE ARRAY INFO2 ( strength array)
 : END-MSGE                  ( end of game message)
    TEXT 12 0 VHTAB ." END OF GAME COMMANDER" ;
 
+
+
+
+
+
+
+
+-->
 ( graphics shapes and utilities)
 
 0 VARIABLE SPACEFIG 80 ALLOT  ( shape tables)
@@ -133,6 +157,7 @@ SPACEFIG                    ( load shape tables)
 ( space shape)
    24 C$ 3F C$ 37 C$ 36 C$ 2E C$ 24 C$ 2C C$ 36 C$ 2E C$ 2C C$
    2E C$ 25 C$ 24 C$ 3C C$ 37 C$ 2E C$ 34 C$ 36 C$ 00 C$
+-->
 ( colony shape)
    12 C$ 2D C$ 24 C$ 24 C$ 3F C$ 3F C$ 36 C$ 36 C$ 2D C$ 00 C$
 ( planet shape )
@@ -148,6 +173,7 @@ SPACEFIG                    ( load shape tables)
 
 DECIMAL DROP FORGET C$  ( we don't need C$ and $ any more)
 
+-->
 : SKETCH  ( n ---  )    ( sketch shape n at current position)
    2 * 0 SWAP SPACEFIG + @ SPACEFIG + DRAW ;
 
@@ -163,8 +189,7 @@ DECIMAL DROP FORGET C$  ( we don't need C$ and $ any more)
                    LOOP
    NO-OF-B-HOLES 0 DO 8 RANDOM1 RANDOM2 GALAXY C!
                       ( set up black holes)
-                   LOOP ;
-
+                   LOOP ;                                    -->
 : INITIALISE         ( initialise all variables and arrays)
    CR CR
    BEGIN
@@ -180,7 +205,7 @@ DECIMAL DROP FORGET C$  ( we don't need C$ and $ any more)
    KEY 127 AND     ( pick up reply)
    CASE
       49 ( 1) OF 350 LEN ! ( 350 moves) ENDOF
-      50 ( 2) OF 700 LEN ! ( 700 moves) ENDOF
+      50 ( 2) OF 700 LEN ! ( 700 moves) ENDOF                -->
                 1500 LEN ! ( 1500 moves otherwise)
    ENDCASE
    HOME ." INITIALISING"
@@ -196,7 +221,7 @@ DECIMAL DROP FORGET C$  ( we don't need C$ and $ any more)
                    15 ROT ROT INFO2 C!
               LOOP
    16 22 18 GALAXY C! 16 18 22 GALAXY C! ( position fleets)
-   22 1 1 FLEETS C! 18 1 2 FLEETS C!
+   22 1 1 FLEETS C! 18 1 2 FLEETS C!                         --> 
    18 2 1 FLEETS C! 22 2 2 FLEETS C!
    29 3 DIFF @ * - NEW !  ( how often computer creates fleets)
    15 DIFF @ 4 * * TROOPS ! ( initial no. of computer troops)
@@ -212,7 +237,7 @@ DECIMAL DROP FORGET C$  ( we don't need C$ and $ any more)
    17 5 HPOSN
       238 5 HLINE 238 126 HLINE 17 126 HLINE 17 5 HLINE
    57 27 HPOSN
-      198 27 HLINE 198 104 HLINE 57 104 HLINE 57 27 HLINE
+      198 27 HLINE 198 104 HLINE 57 104 HLINE 57 27 HLINE    -->
    HOME
    ." PLAYER"
    2  0  VHTAB ." PLANETS ="
@@ -226,6 +251,9 @@ DECIMAL DROP FORGET C$  ( we don't need C$ and $ any more)
    20 25 VHTAB ." SCORE ="
    22 21 VHTAB ." CREDITS" ;
 
+
+
+-->
 : FIND-DIRECTION     (  --- X Y )
                      ( find out which square player means)
    23 0 VHTAB ." WHICH DIRECTION?"
@@ -241,6 +269,7 @@ DECIMAL DROP FORGET C$  ( we don't need C$ and $ any more)
    2 F C@ + EDGE-CHECK SWAP
    1 F C@ + EDGE-CHECK SWAP ;
 
+-->
 : PRINT-IT  ( c  --- )
             ( shape determined by c is printed on screen at)
             ( position in X,Y)
@@ -256,6 +285,7 @@ DECIMAL DROP FORGET C$  ( we don't need C$ and $ any more)
       X @ 20 * 27 + Y @ 1+ 11 * HPOSN
       CASE                        ( draw shape)
          2 ( a star)         OF 3 SKETCH ( draw star)     ENDOF
+-->
          4 ( empty planet)   OF 2 SKETCH ( a planet)      ENDOF
          5 ( enemy planet)   OF 2 SKETCH ( a planet)      ENDOF
        132 ( players planet) OF 1 SKETCH ( a colony)      ENDOF
@@ -271,7 +301,7 @@ DECIMAL DROP FORGET C$  ( we don't need C$ and $ any more)
               OVER EDGE-CHECK OVER EDGE-CHECK
               J Y ! I X ! GALAXY C@
               PRINT-IT 1+
-           LOOP
+           LOOP                                              -->
            11 - SWAP 1+ SWAP
         LOOP
    DROP DROP ;
@@ -287,7 +317,7 @@ DECIMAL DROP FORGET C$  ( we don't need C$ and $ any more)
    20 2  VHTAB 2 F C@ 2 .R
    20 9  VHTAB 1 F C@ 2 .R
    21 15 VHTAB 3 F @ 4 .R
-   22 10 VHTAB 5 F @ 6 .R
+   22 10 VHTAB 5 F @ 6 .R                                    -->
    22 31 VHTAB CREDIT @ 6 .R ;
 
 : DRAW-DISPLAY
@@ -303,7 +333,7 @@ DECIMAL DROP FORGET C$  ( we don't need C$ and $ any more)
    0 1 F C@ 2 F C@ GALAXY C!   ( remove old symbol)
    16 ROT ROT GALAXY C!       ( position fleet)
    2 F C! 1 F C! ;             ( update fleet array)
-
+-->
 : CHECK-POSITION  ( X Y --- )
                   ( check if move to position X Y is possib
                   ( and take apropriate action)
@@ -317,6 +347,9 @@ DECIMAL DROP FORGET C$  ( we don't need C$ and $ any more)
    ENDCASE
    DRAW-DISPLAY ;
 
+
+
+-->
 : OTHER-FLEET   ( make other fleet curent fleet)
    FLEET-FLAG @ 1 =
    IF  2 FLEET-FLAG !
@@ -332,7 +365,7 @@ DECIMAL DROP FORGET C$  ( we don't need C$ and $ any more)
 
 : MOVE-DOWN
    1 F C@ 1+ 2 F C@ CHECK-POSITION ;
-
+-->
 : MOVE-UP
    1 F C@ 1 - 2 F C@ CHECK-POSITION ;
 
@@ -348,7 +381,7 @@ DECIMAL DROP FORGET C$  ( we don't need C$ and $ any more)
        12 0 VHTAB ." NO OF LEGIONS AVAILABLE = " 3 .R
        ( take the order)
        14 0 VHTAB ." HOW MANY DO YOU REQUIRE?" INPUT
-       LEG @ MIN DUP TEMP1 @ * CREDIT @ >
+       LEG @ MIN DUP TEMP1 @ * CREDIT @ >                    -->
        IF  ( not enough money)
          16 0 VHTAB ." NOT ENOUGH CREDIT"
        ELSE
@@ -364,7 +397,7 @@ DECIMAL DROP FORGET C$  ( we don't need C$ and $ any more)
    IF    ( it's ok to buy)
       5 BUY-V !               ( stop continous buying)
       RANDOM1 5 / XY@ INFO1 C@ 10 / + 1+ DUP TEMP1 !
-      10 0 VHTAB ." COST PER SHIP = " 2 .R
+      10 0 VHTAB ." COST PER SHIP = " 2 .R                   -->
       12 0 VHTAB ." HOW MANY DO YOU WANT?" INPUT
       CREDIT @ TEMP1 @ / MIN    ( no more than he can afford)
       DUP 3 F @ + 3 F !       ( update ships in fleet)
@@ -380,6 +413,7 @@ DECIMAL DROP FORGET C$  ( we don't need C$ and $ any more)
    5 F @ TEMP1 @ + 5 F !     ( update legions on fleet)
    XY@ INFO2 C@ TEMP1 @ - XY@ INFO2 C! ; ( update on planet)
 
+-->
 : LEAVE   ( leave legions from fleet on planet as garrison)
    10 0 VHTAB ." HOW MANY DO YOU WISH TO LEAVE?" INPUT
    5 F @ MIN TEMP1 !         ( no more than you have)
@@ -395,7 +429,7 @@ DECIMAL DROP FORGET C$  ( we don't need C$ and $ any more)
                                 ( give size of local garrison)
       12 0 VHTAB ." DO YOU WISH TO:" 12 SPACES ( give options)
       CR ." 1.  LEAVE LEGIONS ON PLANET"
-      CR ." 2.  GATHER LEGIONS FROM PLANET"
+      CR ." 2.  GATHER LEGIONS FROM PLANET"                  -->
       CR ." 3.  BUY SHIPS"
       CR ." 4.  ENLIST TROOPS"
       CR ." 5.  LEAVE" CR
@@ -411,6 +445,7 @@ DECIMAL DROP FORGET C$  ( we don't need C$ and $ any more)
    UNTIL
    H1 CLEAR-MSGE DRAW-DISPLAY ;
 
+-->
 : COLONISE ( attack an uncolonised planet)
    CLEAR-MSGE
    XY@ INFO1 C@ 8 / RANDOM1 1 - 5 / 7 + * 10 / DUP TEMP1 !
@@ -442,6 +477,7 @@ DECIMAL DROP FORGET C$  ( we don't need C$ and $ any more)
    ENDIF
    H1 CLEAR-MSGE ;
 
+-->
 : NOT-PLANET   ( there isn't a planet where he's trying to land)
    10 0 VHTAB ." NO PLANET THERE'
    DELAY H1 CLEAR-MSGE ;
@@ -457,7 +493,7 @@ DECIMAL DROP FORGET C$  ( we don't need C$ and $ any more)
       XY@ INFO2 C@ 5 F @ * TEMP1 @ / 2 / XY@ INFO2 C@ SWAP
       - XY@ INFO2 C!
       5 F @ 2 / DUP 3 .R 5 F @ SWAP - 5 F !
-   ELSE
+   ELSE -->
       0 XY@ INFO2 C!           ( reduce legions on planet to 0)
       10 0 VHTAB ." PLANET CAPTURED"
       12 0 VHTAB ." YOUR LOSSES = "
@@ -474,7 +510,7 @@ DECIMAL DROP FORGET C$  ( we don't need C$ and $ any more)
 
 : ENEMY-PLANET   ( player orbits enemy planet)
    XY@ INFO1 C@ 8 /
-   10 0 VHTAB ." CLASS " 2 .R ."  PLANET" CR CR
+   10 0 VHTAB ." CLASS " 2 .R ."  PLANET" CR CR -->
    ." ENEMY GARRISON OF STRENGTH "
    XY@ INFO2 C@ 3 .R CR CR
    ." DO YOU WISH TO ATTACK?" KEY 127 AND 89 =
@@ -489,7 +525,7 @@ DECIMAL DROP FORGET C$  ( we don't need C$ and $ any more)
    CASE
       4 ( uncolonised planet) OF EMPTY-PLANET    ENDOF
       5 ( computers planet)   OF ENEMY-PLANET    ENDOF
-    132 ( players colony)     OF FRIENDLY-PLANET ENDOF
+    132 ( players colony)     OF FRIENDLY-PLANET ENDOF -->
         NOT-PLANET  ( otherwise it's not a planet)
    ENDCASE ;
 
@@ -505,7 +541,7 @@ DECIMAL DROP FORGET C$  ( we don't need C$ and $ any more)
       14 0 VHTAB ." SUCCEEDS"
    ELSE ( revolt fails)
       SWAP 2 / - XY@ INFO2 C!         ( reduce legions)
-      XY@ INFO1 C@ 7 OR XY@ INFO1 C!  ( set revolt factor 7)
+      XY@ INFO1 C@ 7 OR XY@ INFO1 C!  ( set revolt factor 7) -->
       14 0 VHTAB ." FAILS"
    ENDIF
    DELAY
@@ -521,7 +557,7 @@ DECIMAL DROP FORGET C$  ( we don't need C$ and $ any more)
      SIZE 1+ 1 DO
                  I J GALAXY C@ 132 =
                  IF   ( it's a colony)
-                    I J INFO1 C@ 3 * 5 / ( tax from planet)
+                    I J INFO1 C@ 3 * 5 / ( tax from planet)  -->
                     VTAX @ + DUP VTAX !  ( update tax)
                     10 17 VHTAB 5 .R
                     I J INFO1 C@ 7 AND -DUP
@@ -536,6 +572,8 @@ DECIMAL DROP FORGET C$  ( we don't need C$ and $ any more)
    CREDIT @ VTAX @ + CREDIT !            ( update credit)
    H1 CLEAR-MSGE DRAW-DISPLAY ;
 
+
+-->
 : COMPUTER-TURN   ( computers turn to do something)
    -1 NEW +!                            ( decrement NEW)
    NEW @ 0=
@@ -551,7 +589,7 @@ DECIMAL DROP FORGET C$  ( we don't need C$ and $ any more)
             2DUP 17 ROT ROT GALAXY C!   ( place fleet symbol)
             INFO2 C! 1                  ( plus legions)
          ELSE
-            DROP DROP DROP 0
+            DROP DROP DROP 0                                -->
          ENDIF
       UNTIL
    ENDIF
@@ -567,7 +605,7 @@ DECIMAL DROP FORGET C$  ( we don't need C$ and $ any more)
        132 OF ( players planet)
               2DUP Y ! X ! INFO2 C@ C-LEGIONS @ 2 / <
               IF ( captures planet)
-                 C-LEGIONS @ 3 / C-LEGIONS !
+                 C-LEGIONS @ 3 / C-LEGIONS !                 -->
                  5 XY@ GALAXY C!
                  XY@ INFO1 C@ 8 / CLASS-TOTALS +!
                  1 C-PLANETS +!
@@ -583,7 +621,7 @@ DECIMAL DROP FORGET C$  ( we don't need C$ and $ any more)
    TEXT
    2 F C@ 2 + DUP 3 - DO
       1 F C@ 2 + DUP 3 - DO
-         I EDGE-CHECK J EDGE-CHECK GALAXY C@ 17 =
+         I EDGE-CHECK J EDGE-CHECK GALAXY C@ 17 =            -->
          IF  ( there's a fleet in range)
             I EDGE-CHECK X ! J EDGE-CHECK Y !
          ENDIF
@@ -599,7 +637,7 @@ DECIMAL DROP FORGET C$  ( we don't need C$ and $ any more)
       ROT ROT - 0 MAX DUP 0=
       IF ( computers fleet destroyed)
       DROP TROOPS @ XY@ INFO2 C@ - TROOPS !
-      ( reduce computers troops)
+      ( reduce computers troops)                             -->
 
       0 XY@ GALAXY C!          ( destroy fleet symbol)
          -1 C-FLEETS +!        ( reduce comps fleets)
@@ -615,7 +653,7 @@ DECIMAL DROP FORGET C$  ( we don't need C$ and $ any more)
          3 F !
       ENDIF
    ENDIF
-   DELAY DELAY DRAW-DISPLAY H1 CLEAR-MSGE ;
+   DELAY DELAY DRAW-DISPLAY H1 CLEAR-MSGE ;                  -->
 
 : INFORMATION  ( display the text screen information)
    TEXT KEY H1 ;
@@ -631,7 +669,7 @@ HEX
    CASE
       ( A) 41 OF MOVE-LEFT   ENDOF
       ( S) 53 OF MOVE-RIGHT  ENDOF
-      ( W) 57 OF MOVE-UP     ENDOF
+      ( W) 57 OF MOVE-UP     ENDOF                          -->
       ( Z) 5A OF MOVE-DOWN   ENDOF
       ( O) 4F OF OTHER-FLEET ENDOF
       ( I) 49 OF INFORMATION ENDOF
@@ -647,7 +685,7 @@ HEX
    ELSE
       COMPUTER ! 0
    ENDIF ;
-
+-->
 : GAME-END?
    LEN @ 0= ;    ( game end if LEN is zero)
 
@@ -663,7 +701,7 @@ HEX
       ENDIF
       COMPUTER?
       IF
-         COMPUTER-TURN
+         COMPUTER-TURN -->
       ENDIF
       GAME-END?
    UNTIL
@@ -678,3 +716,5 @@ HEX
    ." ALAN SARTORI-ANGUS"
    INITIALISE
    RESTART ;
+
+
