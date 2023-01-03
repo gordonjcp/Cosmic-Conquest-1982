@@ -1,12 +1,12 @@
 ( constants)
-30 CONSTANT SIZE                    ( the size of the galactic array)
-SIZE 2 * CONSTANT NO-OF-STARS       ( no. of stars in the galaxy)
+30 CONSTANT SIZE              ( the size of the galactic array)
+SIZE 2 * CONSTANT NO-OF-STARS ( no. of stars in the galaxy)
 SIZE 3 * 2 / CONSTANT NO-OF-PLANETS ( planets in galaxy)
 4 CONSTANT NO-OF-B-HOLES            ( no. of black holes)
-200 CONSTANT W1                     ( weight value assigned to planets in score)
-5 CONSTANT W2                       ( weight assigned to ship and troops)
-10 CONSTANT W3                      ( weight assigned to computers troops)
-20000 CONSTANT SPEED                ( how quickly computer moves)
+200 CONSTANT W1    ( weight value assigned to planets in score)
+5 CONSTANT W2             ( weight assigned to ship and troops)
+10 CONSTANT W3           ( weight assigned to computers troops)
+20000 CONSTANT SPEED              ( how quickly computer moves)
 
 ( VARIABLES)
 0 VARIABLE TEMP1        ( a temporary storage v ariable)
@@ -20,7 +20,7 @@ SIZE 3 * 2 / CONSTANT NO-OF-PLANETS ( planets in galaxy)
 0 VARIABLE RAND2        ( second random number seed)
 0 VARIABLE X            ( temporary storage for X position)
 0 VARIABLE Y            ( temporary storage for Y position)
-0 VARIABLE BUY-V        ( count to stop player buying every move)
+0 VARIABLE BUY-V      ( count to stop player buying every move)
 0 VARIABLE LEG          ( the no. of legions available to buy)
 0 VARIABLE NEW          ( how often new fleet created)
 0 VARIABLE COMP-START   ( how quickly computer plays)
@@ -64,7 +64,7 @@ SIZE SIZE ARRAY INFO2 ( strength array)
 : DELAY                      ( delay a fixed amount of time)
    5000 0 DO LOOP ;
 
-: CLEAR-MSGE                 ( clear message area on text screen)
+: CLEAR-MSGE               ( clear message area on text screen)
    18 10 DO
            I 0 VHTAB 35 SPACES
          LOOP ;
@@ -190,7 +190,7 @@ DECIMAL DROP FORGET C$  ( we don't need C$ and $ any more)
    0 PLANETS !             ( no planets)
    0 C-PLANETS !           ( none for computer either)
    20 1 3 FLEETS ! 20 2 3 FLEETS ! ( fleets start with 20 ships)
-   50 1 5 FLEETS ! 50 2 5 FLEETS ! ( fleets have 50 legions each)
+   50 1 5 FLEETS ! 50 2 5 FLEETS ! ( fleets have 50 legions )
    DIFF @ 4 * 0 DO ( position computers fleets)
                    RANDOM1 RANDOM2 2DUP 17 ROT ROT GALAXY C!
                    15 ROT ROT INFO2 C!
@@ -369,7 +369,7 @@ DECIMAL DROP FORGET C$  ( we don't need C$ and $ any more)
       CREDIT @ TEMP1 @ / MIN    ( no more than he can afford)
       DUP 3 F @ + 3 F !       ( update ships in fleet)
       TEMP1 @ * CREDIT @ SWAP - CREDIT !  ( update credit)
-      16 1 F C@ 2 F C@ GALAXY C!  ( make sure fleet symbol there)
+      16 1 F C@ 2 F C@ GALAXY C! ( make sure fleet symbol there)
    ELSE
       10 0 VHTAB ." NO SHIPS AVAILABLE"
    ENDIF ;
@@ -449,7 +449,7 @@ DECIMAL DROP FORGET C$  ( we don't need C$ and $ any more)
 : ATTACK       ( attack a planet controlled by the computer)
    CLEAR-MSGE
    XY@ INFO2 C@ RANDOM1 1 - 5 / 7 + * 10 / DUP TEMP1 !
-               ( calaculate enemy garrlsons effective strength)
+               ( calculate enemy garrlsons effective strength)
    5 F @ >
    IF   ( enemy garrison wins)
       10 0 VHTAB ." YOUR FORCES RETREAT"
