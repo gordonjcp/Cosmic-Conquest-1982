@@ -1,34 +1,33 @@
 ( Cosmic Conquest, converted to fig-forth)
-( hires graphics words stubs)
-: hclr ; : draw drop ; : scale drop ; 
+( hires graphics words)
 16 base c!
-: hcolour 00e4 c! ;
-CREATE VHTAB b5 c, 00 c, 85 c, 25 c, b5 c, 02 c, 85 c, 24 c,
+: scale 00e7 c! ; : hcolour 7 and f6f6 + c@ 00e4 c! ;
+: h1 c054 c@ drop c053 c@ drop c057 c@ drop c050 c@ drop ;
+( machine code words )
+CREATE VHTAB b5 c, 02 c, 85 c, 25 c, b5 c, 00 c, 85 c, 24 c,
 20 c, 22 c, fc c, 4c c, ec c, 41 c, smudge
-create h1 20 c, e2 c, f3 c, 4c c, 44 c, 40 c, smudge
-create hposn 86 c, e5 c, b5 c, 00 c, 85 c, e0 c, b5 c, 01 c,
-85 c, e1 c, b5 c, 02 c, 85 c, e2 c, 20 c, 17 c, f4 c,
-a6 c, e5 c, 4c c, ec c, 41 c,
-smudge
-create hline 86 c, e5 c, b4 c, 02 c, b5 c, 00 c, 48 c, b5 c,
-01 c, aa c, 68 c, ea c, ea c, ea c, a6 c, e5 c,
+create hclr 20 c, e2 c, f3 c, 4c c, 44 c, 40 c, smudge
+create hposn 86 c, ef c, b5 c, 00 c, 48 c, b5 c, 02 c, 48 c, 
+b5 c, 03 c, a8 c, 68 c, aa c, 68 c, 20 c, 11 c, f4 c,
+a6 c, ef c, 4c c, ec c, 41 c, smudge
+create hline 86 c, ef c, b4 c, 00 c, b5 c, 02 c, 48 c, b5 c,
+03 c, aa c, 68 c, 20 c, 3a c, f5 c, a6 c, ef c,
 4c c, ec c, 41 c, smudge
-;s
-                                                            -->
+-->
 ." page 2"
+create draw 86 c, ef c, b5 c, 00 c, 85 c, 1a c, b5 c, 01 c,
+85 c, 1b c, b5 c, 02 c, 29 c, 3f c, 85 c, f9 c, 20 c, 05 c,
+f6 c, a6 c, ef c, 4c c, ec c, 41 c, smudge
 
+( workaround)
 
 ( workaround)
 
 
 
-
-( workaround)
-
-
-
+( ) 
 decimal
-: j 1 ;
+0 variable jv : j jv c@ ;
 : 2dup over over ;
 --> 
 ( constants)
@@ -41,7 +40,7 @@ SIZE 3 * 2 / CONSTANT NO-OF-PLANETS ( planets in galaxy)
 10 CONSTANT W3           ( weight assigned to computers troops)
 20000 CONSTANT SPEED              ( how quickly computer moves)
 
-
+( )
 
 ( VARIABLES)
 0 VARIABLE TEMP1        ( a temporary storage v ariable)
@@ -66,7 +65,7 @@ SIZE 3 * 2 / CONSTANT NO-OF-PLANETS ( planets in galaxy)
 0 VARIABLE FLEET-FLAG   ( no. of players current fleet)
 250 VARIABLE CREDIT     ( players credit in taxes)           
 0 VARIABLE START        ( starting score in the game)
-
+." defining words"
 ( DEFINING WORDS)
 : ARRAY ( 2D Array)
    <BUILDS DUP C, * ALLOT DOES>
@@ -93,7 +92,7 @@ SIZE SIZE ARRAY INFO2 ( strength array)
    4 ?PAIRS COMPILE DROP BEGIN SP@ CSP @ = 0= WHILE 2 
    [COMPILE] ENDIF REPEAT CSP ! ; IMMEDIATE                
 
-
+." general utility"
 -->
 ( general utility words) 
 : DELAY                      ( delay a fixed amount of time)
@@ -108,7 +107,7 @@ SIZE SIZE ARRAY INFO2 ( strength array)
 : CLEAR-SCREEN ( clear hires screen 1)
    H1 HCLR ;
 
-
+." clear-disp"
 
 -->
                                                              
@@ -130,7 +129,7 @@ SIZE SIZE ARRAY INFO2 ( strength array)
                                                              
 : EDGE-CHECK ( n --- ng ) ( calculate wraparound of galaxy) 
    SIZE 1 - + SIZE MOD 1+ ;
-
+( )
 
 
 ( work around a bug in figforth)
@@ -196,12 +195,12 @@ SPACEFIG                    ( load shape tables)
    00 C$
 ( computers fleet shape)
    36 C$ 07 C$ 20 C$ 29 C$ 32 C$ 00 C$
-
 DECIMAL DROP FORGET C$  ( we don't need C$ and $ any more)
-
-
+hex
+: xtest cr eb @ . ed @ . spacefig 1f + draw eb @ . ed @ . ;
+decimal
 : SKETCH  ( n ---  )    ( sketch shape n at current position)
-   2 * 0 SWAP SPACEFIG + @ SPACEFIG + DRAW ;
+   2 * 10 SWAP SPACEFIG + @ SPACEFIG + DRAW ;
 
 ( into the main game words)
 
@@ -230,7 +229,7 @@ DECIMAL DROP FORGET C$  ( we don't need C$ and $ any more)
    ." 3. LONG" CR ." GAME"
    KEY 127 AND     ( pick up reply) 
 
-
+( )
 
    CASE
       49 ( 1) OF 350 LEN ! ( 350 moves) ENDOF
@@ -322,7 +321,7 @@ DECIMAL DROP FORGET C$  ( we don't need C$ and $ any more)
 
 : DRAW-SCAN                       ( draw the screen display)
    1 F C@ 5 - 2 F C@ 5 -
-   11 0 DO
+   11 0 DO i jv c!
       11 0 DO
               OVER EDGE-CHECK OVER EDGE-CHECK
               J Y ! I X ! GALAXY C@
@@ -373,7 +372,7 @@ DECIMAL DROP FORGET C$  ( we don't need C$ and $ any more)
    ENDCASE
    DRAW-DISPLAY ;
 
-
+." other-fleet"
 
 
 : OTHER-FLEET   ( make other fleet curent fleet)
@@ -449,8 +448,8 @@ DECIMAL DROP FORGET C$  ( we don't need C$ and $ any more)
 -->
 : FRIENDLY-PLANET   ( options upon landing at colony)
    BEGIN
-      10 0 VHTAB ." CLASS " XY@ INFO1 C@ 8 / 2 .R
-      ."  PLANET" 16 SPACES CR  ( give class of planet)
+      10 0 VHTAB ." CLASS " XY@ INFO1 C@ 8 / 2 .R 1 SPACES
+      ." PLANET" 16 SPACES CR  ( give class of planet)
       ." LOCAL GARRISON IS " XY@ INFO2 C@ 3 .R ."  LEGIONS"
                                 ( give size of local garrison)
       12 0 VHTAB ." DO YOU WISH TO:" 12 SPACES ( give options)
@@ -503,7 +502,7 @@ DECIMAL DROP FORGET C$  ( we don't need C$ and $ any more)
    ENDIF
    H1 CLEAR-MSGE ;
 
-
+." not-planet"
 : NOT-PLANET   ( there isn't a planet where he's trying to land)
    10 0 VHTAB ." NO PLANET THERE"
    DELAY H1 CLEAR-MSGE ;
@@ -579,7 +578,7 @@ DECIMAL DROP FORGET C$  ( we don't need C$ and $ any more)
    TEXT                               ( select text page)
    10 0 VHTAB ." TAX COLLECTED ="
    10 17 VHTAB 0 .
-   SIZE 1+ 1 DO
+   SIZE 1+ 1 DO i jv c!
      SIZE 1+ 1 DO
                  I J GALAXY C@ 132 =
                  IF   ( it's a colony)
@@ -598,7 +597,7 @@ DECIMAL DROP FORGET C$  ( we don't need C$ and $ any more)
    CREDIT @ VTAX @ + CREDIT !            ( update credit)
    H1 CLEAR-MSGE DRAW-DISPLAY ;
 
-
+." computer-turn"
 
 : COMPUTER-TURN   ( computers turn to do something)
    -1 NEW +!                            ( decrement NEW)
@@ -645,7 +644,7 @@ DECIMAL DROP FORGET C$  ( we don't need C$ and $ any more)
 : FIRE     ( players fleet attacks computer fleet)
    0 X !
    TEXT
-   2 F C@ 2 + DUP 3 - DO
+   2 F C@ 2 + DUP 3 - DO i jv c! 
       1 F C@ 2 + DUP 3 - DO
          I EDGE-CHECK J EDGE-CHECK GALAXY C@ 17 =            
          IF  ( there's a fleet in range)
@@ -702,7 +701,7 @@ HEX
       ( L) 4C OF LAND        ENDOF
       ( T) 54 OF TAX         ENDOF
       ( F) 46 OF FIRE        ENDOF
-   ENDCASE SP! ; -->
+   ENDCASE SP! ; DECIMAL -->
 
 : COMPUTER?    ( is it the computers turn or not)
    COMPUTER @ 1 - DUP 0=
